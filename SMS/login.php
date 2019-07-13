@@ -1,84 +1,91 @@
-<!--
-  Starting session so that if in one tab the user
-  is already logged in then in other tab it must
-  automatically redirect to admindash.php instead of
-  again showing up the login page
--->
-
 <?php
   session_start();
-  //kunai ID session ma involve vaye paxi matrai admindash.php ma redirect garney
-  if(isset($_SESSION['uid'])){
+  //Checking if admin has session or not(logged in)
+  //If already logged in then redirect to dashboard
+  //Else open login.php for loggin in
+  if (isset($_SESSION['uid'])) {
     header('location:admin/admindash.php');
   }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title> Admin Login </title>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="css/login_style.css">
   </head>
   <body>
 
-    <h1 align = "center"> Admin Login </h1>
+    <div style="float:left; margin-left: 150px; margin-top: 100px; color: #fff; font-size:20px;">
+      <i class="fas fa-home"> <a href="index.php"> Home </a> </i>
+    </div>
+
     <form action="login.php" method="post">
-      <table align = "center">
-        <tr>
-          <td> Username </td>
-          <td> <input type="text" name="uname" required> </td>
-        </tr>
-        <tr>
-          <td> Password </td>
-          <td> <input type="password" name="pass" required> </td>
-        </tr>
-        <tr>
-          <td colspan="2" align = "center"> <input type="submit" name="login" value="Login"> </td>
-        </tr>
-      </table>
-    </form>
+
+      <div class="login-box">
+        <h1>Admin Login</h1>
+        <div class="textbox">
+          <i class="fas fa-user"></i>
+          <input type="text" name="uname" placeholder="Username" required>
+        </div>
+
+        <div class="textbox">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="pass" placeholder="Password" required>
+        </div>
+
+        <input type="submit" name="login" class="btn" value="Sign in">
+      </div>
+
+      </form>
 
   </body>
 </html>
 
 <?php
-  //Connecting Database
+  //Connecting with database
   include('dbcon.php');
 
-  //Verifying username and password
-  if(isset($_POST['login'])){
+  //Using isset for checking if the submit button is pressed or not
+  if (isset($_POST['login'])) {
     $username = $_POST['uname'];
     $password = $_POST['pass'];
 
-    //checking username and password
+    //Query
     $qry = "SELECT * FROM `admin` WHERE `username` = '$username' AND `password` = '$password'";
 
-    //running query
+    //firing query $qry with database specified in $con
     $run = mysqli_query($con,$qry);
 
-    //Checking no. of rows .. kati ota row milyo vanera
+    //Outputs how many matching rows are there
     $row = mysqli_num_rows($run);
 
-    //No row matching then displaying error
-    if ($row < 1) {
+    //If matching rows is 0 or no match then redirecting login page
+    if ($row<1) {
       ?>
-      <script> alert('Username and Password not matching !!');
-      window.open('login.php','_self'); //redirect to login.php , _self -> this same page, itself
+      <script>
+        alert('Username or Password not match!!');
+        window.open('login.php','_self');
       </script>
-
       <?php
     }else {
-      //data vanney variable ma $run ko array form ma data fetch garney
+      //If there are matching data then data are retrieved in associative array
       $data = mysqli_fetch_assoc($run);
 
-      //data bata ako unique key lai $id ma store garney so that we can track that specific account
+      //Id from matched row is retrieved and stored in $id for tracking the session of admin
       $id = $data['id'];
 
-      //Assigning id to a session id
+      //Starting session
+      session_start();
+
+      //Setting session id
       $_SESSION['uid'] = $id;
 
-      header('location:admin/admindash.php'); //Don't put spaces in location line
+      //Redirecting to admin dashboard page
+      header('location:admin/admindash.php');
     }
+
   }
+
 ?>

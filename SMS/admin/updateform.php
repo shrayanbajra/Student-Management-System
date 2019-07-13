@@ -1,65 +1,68 @@
 <?php
-
-  //Starting session .. If not logged in then you need to go through login page otherwise addstudent.php is displayed
+  //Starting session
   session_start();
 
-  //Assigning id to a session id
+  //If session id is set
   if (isset($_SESSION['uid'])) {
-    //if session is not destroyed session id is displayed
-    //echo $_SESSION['uid'];
+    echo "";
   }else {
-    //else (i.e. if session is destroyed) no session ID is displayed but it is redirected to the login page for login as you cannot log into dashboard/insertstudent.php without going through the login page
-    header('location:../login.php');
+    //If session is not stored then redireting to login.php for loggin in once again
+    header('location: ../login.php');
   }
 
 ?>
 
-<?php include('header.php'); ?>
+<?php
+  include('header.php');
+  include('titlehead.php');
+  include('../dbcon.php');
 
-<!--Dashboard title-->
-<?php include('titlehead.php');
-      include('../dbcon.php');
+  $sid = $_GET['sid'];
 
-      $sid = $_GET['sid'];
+  $sql = "SELECT * FROM `student` WHERE `id`='$sid'";
+  $run = mysqli_query($con,$sql);
 
-      $sql = "SELECT * FROM `student` WHERE `id` = '$sid'";
+  $data = mysqli_fetch_assoc($run);
+?>
 
-      $run = mysqli_query($con,$sql);
-
-      $data = mysqli_fetch_assoc($run); ?>
-
+<!-- Update Form -->
+<!-- enctype="multipart/form-data" is used for storing images -->
+<!-- Form for updating student details -->
 <form action="updatedata.php" method="post" enctype="multipart/form-data">
-  <table align = "center" border="1">
+
+  <table border="1" align="center" width="30%" style="margin-top:20px;">
     <tr>
-      <td> Roll No. </td>
-      <td> <input type="text" name="rollno" value="<?php echo $data['rollno']; ?>"> </td>
+      <th>Roll No.</th>
+      <td> <input type="text" name="rollno" value=<?php echo $data['rollno']; ?> required> </td>
     </tr>
     <tr>
-      <td> Full Name </td>
-      <td> <input type="text" name="name" value="<?php echo $data['name']; ?>"> </td>
+      <th>Full Name</th>
+      <td> <input type="text" name="name" value=<?php echo $data['name']; ?> required> </td>
     </tr>
     <tr>
-      <td> City </td>
-      <td> <input type="text" name="city" value="<?php echo $data['city']; ?>"> </td>
+      <th>City</th>
+      <td> <input type="text" name="city" value=<?php echo $data['city']; ?> required> </td>
     </tr>
     <tr>
-      <td> Parents' Contact No. </td>
-      <td> <input type="text" name="pcont" value="<?php echo $data['pcont']; ?>"> </td>
+      <th>Parents Contact No.</th>
+      <td> <input type="text" name="pcon" value=<?php echo $data['pcont']; ?> required> </td>
     </tr>
     <tr>
-      <td> Standard </td>
-      <td> <input type="number" name="standard" value="<?php echo $data['standard']; ?>"> </td>
+      <th>Standard</th>
+      <td> <input type="number" name="std" value=<?php echo $data['standard']; ?> required> </td>
     </tr>
     <tr>
-      <td> Image </td>
-      <td> <input type="file" name="image" required> </td>
+      <th>Image</th>
+      <td> <input type="file" name="simg" required> </td>
     </tr>
+
     <tr>
-      <td colspan="2" align = "center">
+
+      <td colspan="2" align="center">
         <input type="hidden" name="sid" value="<?php echo $data['id']; ?>">
         <input type="submit" name="submit" value="Submit"> </td>
     </tr>
-  </table>
-</form>
 
-<?php include('footer.php'); ?>
+  </table>
+
+</form>
