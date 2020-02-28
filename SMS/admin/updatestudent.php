@@ -1,20 +1,18 @@
 <?php
-  //Starting session
-  session_start();
+session_start();
 
-  //If session id is set
-  if (isset($_SESSION['uid'])) {
-    echo "";
-  }else {
-    //If session is not stored then redireting to login.php for loggin in once again
-    header('location: ../login.php');
-  }
+if (isset($_SESSION['uid'])) { //Checking if session id is set
+  echo "";
+} else {
+  //If session is not stored then redireting to login.php for loggin in once again
+  header('location: ../login.php');
+}
 
 ?>
 
 <?php
-  include('header.php');
-  include('titlehead.php');
+include('header.php');
+include('titlehead.php');
 ?>
 
 <!-- Form to search student details -->
@@ -43,34 +41,34 @@
   </tr>
 
   <?php
-    if (isset($_POST['submit'])) {
-      //Firstly connceting database to search data
-      include('../dbcon.php');
+  if (isset($_POST['submit'])) {
+    //Firstly connceting database to search data
+    include('../dbcon.php');
 
-      $standard = $_POST['standard'];
-      $name = $_POST['stuname'];
+    $standard = $_POST['standard'];
+    $name = $_POST['stuname'];
 
-      $sql = "SELECT * FROM `student` WHERE `standard`='$standard' AND `name` LIKE'%$name%'";
-      $run = mysqli_query($con,$sql);
+    $sql = "SELECT * FROM `student` WHERE `standard`='$standard' AND `name` LIKE'%$name%'";
+    $run = mysqli_query($con, $sql);
 
-      if (mysqli_num_rows($run)<1) {
-        echo "<tr><td colspan='5'>No Records Found</td></tr>";
-      }else {
-        $count = 0;
-        while ($data=mysqli_fetch_assoc($run)) {
-          $count++;
-          ?>
-          <tr align="center">
-            <td><?php echo $count; ?></td>
-            <td> <img src="../dataimg/<?php echo $data['image'];?>" style="max-width:100px;"/> </td>
-            <td><?php echo $data['name']; ?></td>
-            <td><?php echo $data['rollno']; ?></td>
-            <td> <a href="updateform.php?sid=<?php echo $data['id']; ?>"> Edit </a> </td>
-          </tr>
-          <?php
-        }
+    if (mysqli_num_rows($run) < 1) {
+      echo "<tr><td colspan='5'>No Records Found</td></tr>";
+    } else {
+      $count = 0;
+      while ($data = mysqli_fetch_assoc($run)) {
+        $count++;
+  ?>
+        <tr align="center">
+          <td><?php echo $count; ?></td>
+          <td> <img src="../dataimg/<?php echo $data['image']; ?>" style="max-width:100px;" /> </td>
+          <td><?php echo $data['name']; ?></td>
+          <td><?php echo $data['rollno']; ?></td>
+          <td> <a href="updateform.php?sid=<?php echo $data['id']; ?>"> Edit </a> </td>
+        </tr>
+  <?php
       }
     }
+  }
   ?>
 
 </table>

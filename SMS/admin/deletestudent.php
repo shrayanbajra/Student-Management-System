@@ -1,12 +1,10 @@
 <?php
-  //Starting session
   session_start();
 
-  //If session id is set
-  if (isset($_SESSION['uid'])) {
+  if (isset($_SESSION['uid'])) { // Checking if session id is set
     echo "";
   }else {
-    //If session is not stored then redireting to login.php for loggin in once again
+    //If session is not stored then redirecting to login.php for loggin in once again
     header('location: ../login.php');
   }
 

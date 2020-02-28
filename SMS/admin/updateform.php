@@ -1,28 +1,26 @@
 <?php
-  //Starting session
-  session_start();
+session_start();
 
-  //If session id is set
-  if (isset($_SESSION['uid'])) {
-    echo "";
-  }else {
-    //If session is not stored then redireting to login.php for loggin in once again
-    header('location: ../login.php');
-  }
+if (isset($_SESSION['uid'])) { //Checking if session id is set
+  echo "";
+} else {
+  //If session is not stored then redireting to login.php for loggin in once again
+  header('location: ../login.php');
+}
 
 ?>
 
 <?php
-  include('header.php');
-  include('titlehead.php');
-  include('../dbcon.php');
+include('header.php');
+include('titlehead.php');
+include('../dbcon.php');
 
-  $sid = $_GET['sid'];
+$sid = $_GET['sid'];
 
-  $sql = "SELECT * FROM `student` WHERE `id`='$sid'";
-  $run = mysqli_query($con,$sql);
+$sql = "SELECT * FROM `student` WHERE `id`='$sid'";
+$run = mysqli_query($con, $sql);
 
-  $data = mysqli_fetch_assoc($run);
+$data = mysqli_fetch_assoc($run);
 ?>
 
 <!-- Update Form -->

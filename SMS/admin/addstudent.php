@@ -1,20 +1,18 @@
 <?php
-  //Starting session
-  session_start();
+session_start();
 
-  //If session id is set
-  if (isset($_SESSION['uid'])) {
-    echo "";
-  }else {
-    //If session is not stored then redireting to login.php for loggin in once again
-    header('location: ../login.php');
-  }
+
+if (isset($_SESSION['uid'])) { // If session id is set
+  echo "";
+} else { // If session is not stored then redireting to login.php for loggin in once again
+  header('location: ../login.php');
+}
 
 ?>
 
 <?php
-  include('header.php');
-  include('titlehead.php');
+include('header.php');
+include('titlehead.php');
 ?>
 
 <!-- enctype="multipart/form-data" is used for storing images -->
@@ -56,35 +54,34 @@
 </form>
 
 </body>
+
 </html>
 
 <?php
-  // if submit is pressed
-  if (isset($_POST['submit'])) {
-    // Connecting database
-    include('../dbcon.php');
+if (isset($_POST['submit'])) { // Check if submit is pressed
 
-    // Taking data from form and storing it in variables
-    $rollno = $_POST['rollno'];
-    $name = $_POST['name'];
-    $city = $_POST['city'];
-    $pcon = $_POST['pcon'];
-    $std = $_POST['std'];
-    $imagename = $_FILES['simg']['name'];
-    $tempname = $_FILES['simg']['tmp_name'];
+  include('../dbcon.php'); // Connecting to database
 
-    move_uploaded_file($tempname, "../dataimg/$imagename");
+  // Taking data from form and storing it in variables
+  $rollno = $_POST['rollno'];
+  $name = $_POST['name'];
+  $city = $_POST['city'];
+  $pcon = $_POST['pcon'];
+  $std = $_POST['std'];
+  $imagename = $_FILES['simg']['name'];
+  $tempname = $_FILES['simg']['tmp_name'];
 
-    $qry = "INSERT INTO `student`(`rollno`, `name`, `city`, `pcont`, `standard`, `image`) VALUES ('$rollno','$name','$city','$pcon','$std','$imagename') ";
-    $run = mysqli_query($con,$qry);
+  move_uploaded_file($tempname, "../dataimg/$imagename");
 
-    if ($run == true) {
-      ?>
-        <script>
-          alert('Data Inserted Successfully');
-        </script>
-      <?php
-    }
+  $qry = "INSERT INTO `student`(`rollno`, `name`, `city`, `pcont`, `standard`, `image`) VALUES ('$rollno','$name','$city','$pcon','$std','$imagename') ";
+  $run = mysqli_query($con, $qry);
 
+  if ($run == true) {
+?>
+    <script>
+      alert('Data Inserted Successfully');
+    </script>
+<?php
   }
+}
 ?>

@@ -1,7 +1,6 @@
 <?php
 
-// Connecting database
-include('../dbcon.php');
+include('../dbcon.php'); // Connecting database
 
 // Taking data from form and storing it in variables
 $rollno = $_POST['rollno'];
@@ -16,15 +15,15 @@ $tempname = $_FILES['simg']['tmp_name'];
 move_uploaded_file($tempname, "../dataimg/$imagename");
 
 $qry = "UPDATE `student` SET `rollno` = '$std', `name` = '$name', `city` = '$city', `pcont` = '$pcon', `standard` = '$std', `image`='$imagename' WHERE `id` = $id;";
-$run = mysqli_query($con,$qry);
+$run = mysqli_query($con, $qry);
 
 if ($run == true) {
-  ?>
-    <script>
-      alert('Data Updated Successfully');
-      window.open('updateform.php?sid=<?php echo $id; ?>','_self');
-    </script>
-  <?php
+?>
+  <script>
+    alert('Data Updated Successfully');
+    window.open('updateform.php?sid=<?php echo $id; ?>', '_self');
+  </script>
+<?php
 }
 
 ?>

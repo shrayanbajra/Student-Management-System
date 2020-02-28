@@ -6,5 +6,3 @@
 
   //Directing to login page after destroying session
   header('location:../login.php');
-
-?>
