@@ -1,10 +1,9 @@
 <?php
 session_start();
 
-
-if (isset($_SESSION['uid'])) { // If session id is set
+if (isset($_SESSION['uid'])) { // Checking if session ID is set
   echo "";
-} else { // If session is not stored then redireting to login.php for loggin in once again
+} else { // If session is not stored then redirecting to login.php for logging in
   header('location: ../login.php');
 }
 
@@ -62,7 +61,7 @@ if (isset($_POST['submit'])) { // Check if submit is pressed
 
   include('../dbcon.php'); // Connecting to database
 
-  // Taking data from form and storing it in variables
+  // Taking data from form and storing in variables
   $rollno = $_POST['rollno'];
   $name = $_POST['name'];
   $city = $_POST['city'];

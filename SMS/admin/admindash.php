@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['uid'])) { // Check if session id is set
+if (isset($_SESSION['uid'])) { // Check if session ID is set
   echo "";
 } else {
   //If session is not stored then redireting to login.php for loggin in once again
